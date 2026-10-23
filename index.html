@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patio Olivas — Cervezas · Tapas · Vinos | San Juan, PR</title>
+  <meta name="description" content="Patio Olivas: un patio de cervezas, tapas y vinos en el corazón de San Juan, Puerto Rico. Tapeo criollo, cócteles de la casa y buena compañía." />
+  <meta property="og:title" content="Patio Olivas — Cervezas · Tapas · Vinos" />
+  <meta property="og:description" content="Tapeo criollo, cócteles de la casa y vinos por copa en San Juan, PR." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav nav--hero-aware" id="nav">
+    <div class="nav__inner">
+      <a class="brand brand--inline" href="index.html" aria-label="Patio Olivas — inicio">
+        <span class="brand__original" aria-hidden="true">
+          <span>Patio</span>
+          <span class="brand__word"><svg class="olive" viewBox="0 0 40 60" aria-hidden="true"><ellipse cx="20" cy="30" rx="16" ry="27"/><ellipse class="olive__pit" cx="25" cy="21" rx="6" ry="10"/></svg>livas</span>
+        </span>
+        <img class="brand__edited-logo" src="images/edited%20logo.png" alt="" aria-hidden="true" />
+      </a>
+
+      <nav class="nav__links" aria-label="Principal">
+        <a href="#nosotros">Nosotros</a>
+        <a href="#menu">Menú</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a class="btn btn--small" href="menu.html">Ver menú completo</a>
+      </nav>
+
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Full-screen overlay menu (hamburger) -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <button class="overlay__close" id="overlayClose" aria-label="Cerrar menú">&times;</button>
+    <div class="overlay__inner">
+      <a class="logo logo--overlay" href="index.html">
+        <img src="images/Patio Olivas - 4.PNG" alt="Patio Olivas" />
+      </a>
+      <p class="overlay__rotator eyebrow">
+        <span class="rotator" data-words="cervezas,tapas,vinos,cócteles,amigos">cervezas</span>
+      </p>
+      <nav class="overlay__links" aria-label="Menú móvil">
+        <a href="#inicio">Inicio</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#menu">Menú</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="menu.html">Menú completo <span aria-hidden="true">→</span></a>
+      </nav>
+      <div class="overlay__meta">
+        <span>603 Av. Julio Andino, San Juan, PR 00924</span>
+        <span>[Teléfono]</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio">
+      <div class="hero__bg">
+        <img src="images/po_entrance.png" alt="Entrada de Patio Olivas de noche" />
+      </div>
+      <div class="hero__shade"></div>
+
+      <div class="hero__content">
+        <a class="logo logo--hero" href="index.html">
+          <img src="images/Diseño sin título (2).png" alt="Patio Olivas — Cervezas, Tapas, Vinos" />
+        </a>
+        <h1 class="hero__title">Un patio para tapear,<br/>brindar y quedarse.</h1>
+        <div class="hero__actions">
+          <a class="btn btn--light" href="menu.html">Ver el menú</a>
+          <a class="btn btn--ghost" href="#ubicacion">Cómo llegar</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section about" id="nosotros">
+      <div class="container about__grid">
+        <div class="about__media reveal">
+          <img class="photo photo--tall" src="images/po_table.png" alt="Tapas y bebidas sobre la mesa" />
+          <img class="photo photo--small about__media-accent" src="images/po_drink.png" alt="Cóctel de la casa" />
+        </div>
+
+        <div class="about__copy reveal reveal--delay">
+          <p class="eyebrow">Nosotros</p>
+          <h2 class="h2">
+            Un rincón <span class="scribble">mediterráneo</span><br/>con sabor boricua.
+          </h2>
+          <p>
+            Patio Olivas nace de una idea sencilla: buena comida para compartir, bebidas bien servidas y un
+            patio abierto donde el tiempo se pasa sin prisa. Nuestro tapeo mezcla la tradición española con
+            el sazón criollo — de los chicharrones de pork belly a las croquetas de temporada.
+          </p>
+          <p>
+            Cervezas frías, cócteles de la casa y vinos por copa seleccionados para acompañar cada bocado.
+            Ven solo, en pareja o con la familia entera: siempre hay una silla en el patio.
+          </p>
+          <ul class="about__facts">
+            <li><strong>Tapeo</strong><span>para compartir</span></li>
+            <li><strong>Cócteles</strong><span>de la casa</span></li>
+            <li><strong>Vinos</strong><span>por copa</span></li>
+          </ul>
+          <a class="link-arrow" href="#menu">Explora el menú <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MENU PREVIEW ============ -->
+    <section class="section menu-preview" id="menu">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">El menú</p>
+          <h2 class="h2">Favoritos del patio</h2>
+          <p class="lead">Una probadita de lo que servimos. El menú completo incluye tapeo, sides, cócteles, cervezas, vinos y bebidas.</p>
+        </div>
+
+        <div class="menu-cards">
+          <!-- Card: Tapeo -->
+          <article class="card card--olive reveal">
+            <span class="card__watermark" aria-hidden="true">Tapeo</span>
+            <h3 class="card__title">Tapeo</h3>
+            <ul class="items">
+              <li class="item">
+                <div class="item__row"><span class="item__name">Sliders</span><span class="item__price">15</span></div>
+                <p class="item__desc">Carne de res magra en pan brioche, mermelada artesanal de bacon y cebolla, queso suizo y aioli de ajo confitado.</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Chicharrón de Pork Belly</span><span class="item__price">13</span></div>
+                <p class="item__desc">Pork belly crujiente con cebollas encurtidas y chimichurri ahumado.</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Croquetas de Temporada</span><span class="item__price">12</span></div>
+                <p class="item__desc">Consulta la variedad disponible. (4)</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Chicharrones de Mero</span><span class="item__price">14</span></div>
+                <p class="item__desc">Mero en tempura criolla, aioli de cilantro y pimiento morrón.</p>
+              </li>
+            </ul>
+          </article>
+
+          <!-- Card: Cócteles -->
+          <article class="card card--beige reveal reveal--delay">
+            <span class="card__watermark" aria-hidden="true">Cócteles</span>
+            <h3 class="card__title">Cócteles</h3>
+            <ul class="items">
+              <li class="item">
+                <div class="item__row"><span class="item__name">El Patio</span><span class="item__price">9</span></div>
+                <p class="item__desc">Vodka · Jengibre · Limón · Ginger Beer</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Lavanda Mule</span><span class="item__price">11</span></div>
+                <p class="item__desc">Vodka · Jengibre · Limón · Ginger Beer · Lavanda</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Espresso Martini</span><span class="item__price">12</span></div>
+                <p class="item__desc">Vodka · Espresso · Licor de café</p>
+              </li>
+              <li class="item">
+                <div class="item__row"><span class="item__name">Aperol Spritz</span><span class="item__price">12</span></div>
+                <p class="item__desc">Aperol · Prosecco · Soda</p>
+              </li>
+            </ul>
+          </article>
+
+          <img class="menu-cards__media photo photo--wide reveal reveal--delay2" src="images/po_table2.png" alt="Mesa de tapas y cócteles" />
+        </div>
+
+        <div class="menu-preview__cta reveal">
+          <a class="btn" href="menu.html">Ver el menú completo</a>
+          <p class="note">Pregunta por la variedad de cervezas artesanales disponibles.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LOCATION ============ -->
+    <section class="section location" id="ubicacion">
+      <div class="container location__grid">
+        <div class="location__info reveal">
+          <p class="eyebrow">Ubicación</p>
+          <h2 class="h2">Te esperamos<br/>en el patio.</h2>
+
+          <dl class="location__details">
+            <div>
+              <dt>Dirección</dt>
+              <dd>603 Av. Julio Andino<br/>San Juan, PR 00924</dd>
+            </div>
+            <div>
+              <dt>Horario</dt>
+              <dd>
+                <span class="hours-row"><span>Jue</span><span>5:00 p.m. – 10:00 p.m.</span></span>
+                <span class="hours-row"><span>Vie – Sáb</span><span>5:00 p.m. – 12:00 a.m.</span></span>
+                <span class="hours-row"><span>Dom</span><span>3:00 p.m. – 9:00 p.m.</span></span>
+                <span class="hours-row"><span>Lun – Mié</span><span>Cerrado</span></span>
+              </dd>
+            </div>
+            <div>
+              <dt>Contacto</dt>
+              <dd>
+                <a href="tel:+1787000000">[Teléfono]</a><br/>
+                <a href="mailto:hola@patioolivas.com">[correo electrónico]</a>
+              </dd>
+            </div>
+          </dl>
+
+          <div class="location__actions">
+            <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Patio+Olivas,+San+Juan">Cómo llegar</a>
+          </div>
+        </div>
+
+        <div class="location__map reveal reveal--delay">
+          <iframe
+            title="Mapa — Patio Olivas, 603 Av. Julio Andino, San Juan"
+            src="https://maps.google.com/maps?q=Patio+Olivas,+San+Juan&ll=18.4047683,-66.0274871&z=16&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a class="logo logo--footer" href="index.html">
+          <img src="images/Patio Olivas - 4.PNG" alt="Patio Olivas" />
+        </a>
+        <p class="eyebrow">Cervezas • Tapas • Vinos</p>
+      </div>
+
+      <nav class="footer__links" aria-label="Pie de página">
+        <a href="#nosotros">Nosotros</a>
+        <a href="menu.html">Menú</a>
+        <a href="#ubicacion">Ubicación</a>
+      </nav>
+
+      <div class="footer__contact">
+        <p>603 Av. Julio Andino<br/>San Juan, PR 00924</p>
+        <div class="socials">
+          <a href="https://www.instagram.com/patiolivaspr/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61593575381601" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <span>&copy; <span id="year"></span> Patio Olivas. Todos los derechos reservados.</span>
+      <span>Creado por AJNL Development</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
