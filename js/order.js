@@ -71,8 +71,21 @@
         <h2 class="cart__title">Confirma tu pedido</h2>
         <button class="cart__back" type="button" data-cart-back>← Volver al pedido</button>
         <div class="cart__confirm" data-cart-summary></div>
+        <fieldset class="cart-tip">
+          <legend>Propina</legend>
+          <div class="cart-tip__options">
+            <button type="button" class="cart-tip__opt is-selected" data-tip="0">Sin propina</button>
+            <button type="button" class="cart-tip__opt" data-tip="0.18">18%<span data-tip-amt="0.18"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="0.20">20%<span data-tip-amt="0.20"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="0.30">30%<span data-tip-amt="0.30"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="other">Otra</button>
+          </div>
+          <label class="cart-tip__other" data-tip-other hidden>Otra cantidad
+            <input name="propina_otra" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00">
+          </label>
+        </fieldset>
         <div class="cart__total"><span>Total a pagar</span><strong data-checkout-total>$0.00</strong></div>
-        <p class="cart__pay-hint">ATH Móvil abre este total para que puedas añadir propina. El restaurante recibe el pedido cuando confirmas el pago.</p>
+        <p class="cart__pay-hint">La propina se suma a este total. En ATH Móvil solo confirmas el pago. El restaurante recibe el pedido cuando queda confirmado.</p>
         <label>Nombre<input name="nombre" type="text" autocomplete="name" required></label>
         <label>Teléfono de ATH Móvil<input name="telefono" type="tel" inputmode="tel" autocomplete="tel" required></label>
         <label>Correo (opcional)<input name="correo" type="email" autocomplete="email"></label>
@@ -93,7 +106,7 @@
           <span>Negocio</span><strong>${esc(ATH_PATH)}</strong>
           <span>Total</span><strong data-pay-total>$0.00</strong>
         </p>
-        <p class="cart__pay-hint">En esa pantalla elige la propina y confirma el pago. El pedido no se envía hasta entonces.</p>
+        <p class="cart__pay-hint">Abre la notificación de ATH Móvil y confirma este cobro. El pedido no se envía hasta entonces.</p>
         <button class="btn btn--light" type="button" data-pay-check>Ya confirmé en ATH Móvil</button>
         <button class="btn btn--ghost cart__done-close" type="button" data-pay-cancel>Cancelar pago</button>
       </div>
@@ -176,17 +189,41 @@
     renderCounts();
   };
 
+  let tipMode = "0";
+
+  const orderCents = () => cart.reduce((sum, i) => sum + cents(i.price) * i.qty, 0);
+
+  const tipCentsOf = (foodCents) => {
+    if (tipMode === "other") {
+      const raw = Number(form.elements.propina_otra?.value);
+      if (!Number.isFinite(raw) || raw <= 0) return 0;
+      return Math.round(raw * 100);
+    }
+    return Math.round(foodCents * Number(tipMode));
+  };
+
   const renderSummary = () => {
     const box = $("[data-cart-summary]", root);
     const totalEl = $("[data-checkout-total]", root);
     const payBtn = $("[data-cart-submit]", root);
-    const total = totalOf(cart);
+    const foodCents = orderCents();
+    const tipCents = tipCentsOf(foodCents);
+    const total = (foodCents + tipCents) / 100;
     box.innerHTML = cart.map((i) => `
       <div class="cart-line cart-line--static">
         <p class="cart-line__name">${i.qty} × ${esc(i.name)}</p>
         <p class="cart-line__price">${money(i.price * i.qty)}</p>
       </div>
-    `).join("");
+    `).join("") + (tipCents > 0 ? `
+      <div class="cart-line cart-line--static">
+        <p class="cart-line__name">Propina</p>
+        <p class="cart-line__price">${money(tipCents / 100)}</p>
+      </div>
+    ` : "");
+    $$("[data-tip-amt]", root).forEach((el) => {
+      const rate = Number(el.dataset.tipAmt);
+      el.textContent = foodCents ? " " + money(Math.round(foodCents * rate) / 100) : "";
+    });
     if (totalEl) totalEl.textContent = money(total);
     if (payBtn && !payBtn.disabled) payBtn.textContent = "Pagar ahora " + money(total);
   };
@@ -389,13 +426,12 @@
     const ref = String(data.referenceNumber || data.reference_number || "").trim();
     const paid = Math.round(Number(data.total) * 100);
     const sameTicket = !data.ecommerceId || data.ecommerceId === pay.ecommerceId;
-    const tipOk = Number.isFinite(paid) && paid >= pay.expectedCents && paid <= pay.expectedCents * 2;
-    if (!sameTicket || status !== "COMPLETED" || !ref || !tipOk) {
+    if (!sameTicket || status !== "COMPLETED" || !ref || paid !== pay.expectedCents) {
       pay.done = true;
       clearPay();
       active = null;
       setView("checkout");
-      if (ref && Number.isFinite(paid) && paid !== pay.expectedCents) {
+      if (ref && paid !== pay.expectedCents) {
         showError(`ATH Móvil confirmó ${money(paid / 100)} y este pedido es ${pay.totalLabel}. No se envió. Referencia ${ref}. Llama al ${PHONE}.`);
       } else {
         showError("El pago de este pedido no quedó confirmado. No se envió.");
@@ -410,8 +446,6 @@
       referencia: ref,
       ecommerceId: pay.ecommerceId,
       cuenta: data.businessPath || ATH_PATH,
-      propina: money((paid - pay.expectedCents) / 100),
-      total_pagado: money(paid / 100),
       estado: "COMPLETED",
       _subject: "Pedido pagado " + ref + " — Patio Olivas",
     };
@@ -485,7 +519,7 @@
         }
         return;
       }
-      setStatus(`Abre ATH Móvil, elige la propina si quieres, y confirma el pago de ${pay.totalLabel}. El pedido se envía cuando ese cobro quede confirmado.`);
+      setStatus(`Abre la notificación de ATH Móvil y confirma el pago de ${pay.totalLabel}. El pedido se envía cuando ese cobro quede confirmado.`);
     } finally {
       if (pay) pay.ticking = false;
     }
@@ -504,7 +538,7 @@
     savePay(record);
     const totalEl = $("[data-pay-total]", root);
     if (totalEl) totalEl.textContent = record.totalLabel;
-    setStatus(`Enviamos el cobro de ${record.totalLabel} a tu ATH Móvil. Ahí puedes añadir propina y confirmar el pago.`);
+    setStatus(`Enviamos el cobro de ${record.totalLabel} a tu ATH Móvil. Abre la notificación y confirma el pago.`);
     setView("paying");
     ensureCartOpen();
     resetSubmit();
@@ -535,6 +569,19 @@
     form.elements.nombre?.focus();
   });
   $("[data-cart-back]", root).addEventListener("click", () => setView("list"));
+  root.addEventListener("click", (e) => {
+    const tipBtn = e.target.closest("[data-tip]");
+    if (!tipBtn || !form.contains(tipBtn)) return;
+    tipMode = tipBtn.dataset.tip;
+    $$("[data-tip]", form).forEach((btn) => btn.classList.toggle("is-selected", btn === tipBtn));
+    const other = $("[data-tip-other]", form);
+    if (other) other.hidden = tipMode !== "other";
+    if (tipMode === "other") form.elements.propina_otra?.focus();
+    renderSummary();
+  });
+  form.elements.propina_otra?.addEventListener("input", () => {
+    if (tipMode === "other") renderSummary();
+  });
 
   $("[data-pay-check]", root).addEventListener("click", () => { tick(); });
   $("[data-pay-cancel]", root).addEventListener("click", async () => {
@@ -611,7 +658,9 @@
     const data = new FormData(form);
     if (data.get("_honey")) return;
     const phone = athPhone(data.get("telefono"));
-    const totalCents = cart.reduce((sum, i) => sum + cents(i.price) * i.qty, 0);
+    const foodCents = orderCents();
+    const tipCents = tipCentsOf(foodCents);
+    const totalCents = foodCents + tipCents;
     const total = totalCents / 100;
     if (!String(data.get("nombre") || "").trim()) {
       showError("Escribe tu nombre.");
@@ -623,6 +672,10 @@
     }
     if (!data.get("dia") || !data.get("hora")) {
       showError("Elige el día y la hora para recoger.");
+      return;
+    }
+    if (tipCents > foodCents) {
+      showError("La propina no puede ser mayor que el pedido.");
       return;
     }
     if (totalCents < 100 || totalCents > 150000) {
@@ -645,9 +698,29 @@
       hora: data.get("hora"),
       notas: data.get("notas") || "",
       pedido: orderText,
-      total: money(total),
+      total: money(foodCents / 100),
+      propina: money(tipCents / 100),
+      total_pagado: money(total),
       pago: "ATH Móvil",
     };
+    const items = cart.map((i) => ({
+      name: i.name.slice(0, 80),
+      description: `${i.qty} × ${i.name}`.slice(0, 80),
+      quantity: String(i.qty),
+      price: (cents(i.price) / 100).toFixed(2),
+      tax: "0.00",
+      metadata: "",
+    }));
+    if (tipCents > 0) {
+      items.push({
+        name: "Propina",
+        description: "Propina",
+        quantity: "1",
+        price: (tipCents / 100).toFixed(2),
+        tax: "0.00",
+        metadata: "",
+      });
+    }
     submit.disabled = true;
     submit.textContent = "Enviando cobro a ATH Móvil…";
     let created;
@@ -658,9 +731,12 @@
           publicToken: publicToken(),
           timeout: 600,
           total,
+          subtotal: total,
+          tax: 0,
           metadata1: "Patio Olivas",
           metadata2: ("PO" + Date.now().toString(36)).slice(0, 40),
           phoneNumber: phone,
+          items,
         },
       });
     } catch (error) {
@@ -703,10 +779,6 @@
       ticking: false,
       authorizing: false,
     });
-    const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
-    if (mobile) {
-      window.location.href = "https://pagos.athmovilapp.com/pagoPorCodigo.html?id=" + encodeURIComponent(ecommerceId);
-    }
   });
 
   const resumeUnsent = () => {

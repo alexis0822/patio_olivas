@@ -804,6 +804,20 @@ body.cart-open { overflow: hidden; }
   font-size: 0.8rem; letter-spacing: 0.08em; text-transform: none; font-weight: 400;
 }
 .cart-form__honey { position: absolute; left: -9999px; }
+.cart-tip { width: 100%; }
+.cart-tip__options { display: flex; gap: 0.35rem; width: 100%; }
+.cart-tip__opt {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.15rem;
+  min-height: 2.7rem; padding: 0.35rem 0.15rem;
+  border: 1px solid rgba(244,240,233,0.35);
+  background: transparent; color: var(--cream);
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em; line-height: 1.2;
+}
+.cart-tip__opt span { font-weight: 500; letter-spacing: 0; }
+.cart-tip__opt.is-selected { background: var(--gold); color: var(--olive-deep); border-color: var(--gold); }
+.cart-tip__other { width: 100%; margin-top: 0.35rem; }
+.cart-tip__other[hidden] { display: none; }
 .cart .btn { width: 100%; }
 
 /* ==========================================================================
