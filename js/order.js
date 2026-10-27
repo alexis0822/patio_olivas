@@ -6,7 +6,7 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const cfg = () => window.PATIO_OLIVAS_ORDER || {};
-  const ATH_PATH = cfg().athPath || "Patiolivaspr";
+  const ATH_PATH = cfg().athPath || "patiolivas";
   const ATH_API = "https://payments.athmovil.com/api/business-transaction/ecommerce";
   const STORAGE = "patioOlivasCart";
   const PAY_KEY = "patioOlivasAthPay";
