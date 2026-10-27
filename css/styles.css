@@ -675,11 +675,6 @@ body.menu-open { overflow: hidden; }
   flex: 1;
   min-width: 0;
 }
-.subnav__order {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  margin: 0.35rem 0;
-}
 .subnav__inner::-webkit-scrollbar { display: none; }
 .subnav__inner a {
   flex: 0 0 auto;
@@ -780,7 +775,10 @@ body.cart-open { overflow: hidden; }
 .cart__ath-box strong {
   font-family: var(--font-serif);
   font-size: 1.35rem; letter-spacing: 0; text-transform: none; font-weight: 500; text-align: right;
+  overflow-wrap: anywhere;
 }
+.cart__ref { font-size: 0.95rem; }
+.cart__status { font-size: 0.95rem; line-height: 1.55; }
 .cart__done-close { margin-top: 0.35rem; border-color: rgba(244,240,233,0.45); }
 .cart__back { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; text-align: left; opacity: 0.8; }
 .cart__error { color: var(--gold-light); font-size: 0.85rem; }
