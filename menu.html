@@ -30,11 +30,17 @@
         <a href="index.html#menu">Menú</a>
         <a href="index.html#ubicacion">Ubicación</a>
         <a class="btn btn--small" href="index.html">Inicio</a>
+        <button type="button" class="btn btn--small cart-btn" data-open-cart>Pedido <span class="cart-btn__count" data-cart-count hidden>0</span></button>
       </nav>
 
-      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="overlay">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav__end">
+        <button type="button" class="cart-btn cart-btn--mobile" data-open-cart aria-label="Pedido">
+          Pedido <span class="cart-btn__count" data-cart-count hidden>0</span>
+        </button>
+        <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="overlay">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -55,9 +61,11 @@
         <a href="#vinos">Vinos</a>
         <a href="index.html#ubicacion">Ubicación</a>
       </nav>
+      <a class="btn btn--light overlay__order" data-open-cart href="#pedido">Ordenar para recoger</a>
       <div class="overlay__meta">
         <span>603 Av. Julio Andino, San Juan, PR 00924</span>
         <span>(939) 343-9664</span>
+        <span>En línea: ATH Móvil · En el patio: efectivo y tarjetas</span>
       </div>
     </div>
   </div>
@@ -72,17 +80,24 @@
       </a>
       <h1 class="h2">El menú</h1>
       <p class="lead">Cervezas • Tapas • Vinos. Todo pensado para compartir.</p>
+      <div class="menu-hero__actions">
+        <a class="btn btn--light" data-open-cart href="#pedido">Ordenar para recoger</a>
+      </div>
+      <p class="menu-hero__note">Añade al pedido en esta página y paga en línea con ATH Móvil (Patiolivaspr). Efectivo y tarjetas se aceptan en el patio. Para recoger: tapeo, sides y bebidas.</p>
     </section>
 
     <!-- Sticky category nav -->
     <div class="subnav">
-      <div class="container subnav__inner" role="navigation" aria-label="Categorías del menú">
-        <a href="#tapeo">Tapeo</a>
-        <a href="#sides">Sides</a>
-        <a href="#cocteles">Cócteles</a>
-        <a href="#cervezas">Cervezas</a>
-        <a href="#vinos">Vinos</a>
-        <a href="#bebidas">Bebidas</a>
+      <div class="container subnav__bar">
+        <div class="subnav__inner" role="navigation" aria-label="Categorías del menú">
+          <a href="#tapeo">Tapeo</a>
+          <a href="#sides">Sides</a>
+          <a href="#cocteles">Cócteles</a>
+          <a href="#cervezas">Cervezas</a>
+          <a href="#vinos">Vinos</a>
+          <a href="#bebidas">Bebidas</a>
+        </div>
+        <a class="btn btn--small subnav__order" data-open-cart href="#pedido" aria-label="Ordenar para recoger">Pedido</a>
       </div>
     </div>
 
@@ -123,15 +138,28 @@
               <p class="item__desc">Mero en tempura criolla, acompañado de aioli de cilantro y pimiento morrón.</p>
             </li>
             <li class="item">
-              <div class="item__row"><span class="item__name">Mini Pastelillos (3)</span></div>
-              <p class="item__desc">
-                <strong>Carne &amp; queso</strong> $5 · <strong>Camarones</strong> $12 · <strong>Carbonara</strong> $7 · <strong>Pionono</strong> $7 · <strong>Mixto (4)</strong> $14<br/>
-                Todos acompañados de aioli de cilantro.
-              </p>
+              <div class="item__row"><span class="item__name">Mini Pastelillos Carne y queso</span><span class="item__price">5</span></div>
+              <p class="item__desc">Tres mini pastelillos. Todos acompañados de aioli de cilantro.</p>
             </li>
             <li class="item">
-              <div class="item__row"><span class="item__name">Salsas</span></div>
-              <p class="item__desc">Mayo Ketchup · Aioli de pimiento morrón · Pique de mango · Chimichurri ahumado<br/>Salsas extras tienen un costo adicional de 50¢.</p>
+              <div class="item__row"><span class="item__name">Mini Pastelillos Camarones</span><span class="item__price">12</span></div>
+              <p class="item__desc">Tres mini pastelillos. Todos acompañados de aioli de cilantro.</p>
+            </li>
+            <li class="item">
+              <div class="item__row"><span class="item__name">Mini Pastelillos Carbonara</span><span class="item__price">7</span></div>
+              <p class="item__desc">Tres mini pastelillos. Todos acompañados de aioli de cilantro.</p>
+            </li>
+            <li class="item">
+              <div class="item__row"><span class="item__name">Mini Pastelillos Pionono</span><span class="item__price">7</span></div>
+              <p class="item__desc">Tres mini pastelillos. Todos acompañados de aioli de cilantro.</p>
+            </li>
+            <li class="item">
+              <div class="item__row"><span class="item__name">Mini Pastelillos Mixto (4)</span><span class="item__price">14</span></div>
+              <p class="item__desc">Cuatro mini pastelillos mixtos. Todos acompañados de aioli de cilantro.</p>
+            </li>
+            <li class="item">
+              <div class="item__row"><span class="item__name">Salsa extra</span><span class="item__price">0.50</span></div>
+              <p class="item__desc">Mayo Ketchup · Aioli de pimiento morrón · Pique de mango · Chimichurri ahumado</p>
             </li>
           </ul>
           <p class="card__note">Aviso de alergia: es importante notificar a alguno de nuestros meseros si es alérgico a algún alimento.</p>
@@ -189,6 +217,7 @@
               <p class="item__desc">Aperol · Prosecco · Soda</p>
             </li>
           </ul>
+          <p class="card__note">Se sirven en el patio.</p>
         </article>
 
         <!-- ============ CERVEZAS ============ -->
@@ -203,7 +232,7 @@
             <li class="item"><div class="item__row"><span class="item__name">Heineken</span><span class="item__price">3.50</span></div></li>
             <li class="item"><div class="item__row"><span class="item__name">Coors Light</span><span class="item__price">1.50</span></div></li>
           </ul>
-          <p class="card__note">Pregunta por la variedad de cervezas artesanales disponibles.</p>
+          <p class="card__note">Se sirven en el patio. Pregunta por la variedad de cervezas artesanales disponibles.</p>
         </article>
 
         <!-- ============ VINOS ============ -->
@@ -222,6 +251,7 @@
             <li class="item"><div class="item__row"><span class="item__name">Merlot</span><span class="item__price">11</span></div></li>
             <li class="item"><div class="item__row"><span class="item__name">Cabernet</span><span class="item__price">9</span></div></li>
           </ul>
+          <p class="card__note">Se sirven en el patio.</p>
         </article>
 
         <!-- ============ BEBIDAS ============ -->
@@ -236,7 +266,7 @@
             <li class="item"><div class="item__row"><span class="item__name">Ginger Ale</span><span class="item__price">3</span></div></li>
             <li class="item"><div class="item__row"><span class="item__name">Perrier</span><span class="item__price">3</span></div></li>
             <li class="item"><div class="item__row"><span class="item__name">Agua de coco</span><span class="item__price">3</span></div></li>
-            <li class="item"><div class="item__row"><span class="item__name">Piña colada</span><span class="item__price">7</span></div></li>
+            <li class="item" data-dine-in><div class="item__row"><span class="item__name">Piña colada</span><span class="item__price">7</span></div></li>
           </ul>
         </article>
 
@@ -247,7 +277,10 @@
         </div>
 
         <div class="menu-page__back reveal">
-          <a class="btn btn--outline" href="index.html">← Volver al inicio</a>
+          <div class="cta-row">
+            <a class="btn" data-open-cart href="#pedido">Ordenar para recoger</a>
+            <a class="btn btn--outline" href="index.html">← Volver al inicio</a>
+          </div>
         </div>
 
       </div>
@@ -273,6 +306,7 @@
 
       <div class="footer__contact">
         <p>603 Av. Julio Andino<br/>San Juan, PR 00924</p>
+        <p>En línea: ATH Móvil · En el patio: efectivo y tarjetas</p>
         <div class="socials">
           <a href="https://www.instagram.com/patiolivaspr/" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -293,6 +327,8 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 
+  <script src="js/order-config.js"></script>
   <script src="js/main.js" defer></script>
+  <script src="js/order.js" defer></script>
 </body>
 </html>

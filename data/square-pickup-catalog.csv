@@ -1,0 +1,25 @@
+Token,Item Name,Variation Name,SKU,Description,Category,Price,Pickup Enabled
+,Sliders,Regular,PO-TAP-01,Carne de res magra en pan brioche con mermelada artesanal de bacon y cebolla queso suizo y aioli de ajo confitado.,Tapeo,15.00,Y
+,Chicharrón de Pork Belly,Regular,PO-TAP-02,Pork belly crujiente con cebollas encurtidas y chimichurri ahumado.,Tapeo,13.00,Y
+,Croquetas de Temporada,Regular,PO-TAP-03,Consulta la variedad disponible. (4),Tapeo,12.00,Y
+,Hummus,Regular,PO-TAP-04,Hummus servido con pan pita.,Tapeo,8.00,Y
+,Chicharrones de Pollo,Regular,PO-TAP-05,Chicharrones de pollo servidos con papas fritas home made. (opción kids),Tapeo,10.00,Y
+,Alitas,Regular,PO-TAP-06,Alitas marinadas en un sofrito asiático y bañadas en nuestra salsa BBQ de la casa. (8),Tapeo,11.00,Y
+,Chicharrones de Mero,Regular,PO-TAP-07,Mero en tempura criolla con aioli de cilantro y pimiento morrón.,Tapeo,14.00,Y
+,Mini Pastelillos Carne y queso,Regular,PO-TAP-08,Tres mini pastelillos de carne y queso con aioli de cilantro.,Tapeo,5.00,Y
+,Mini Pastelillos Camarones,Regular,PO-TAP-09,Tres mini pastelillos de camarones con aioli de cilantro.,Tapeo,12.00,Y
+,Mini Pastelillos Carbonara,Regular,PO-TAP-10,Tres mini pastelillos carbonara con aioli de cilantro.,Tapeo,7.00,Y
+,Mini Pastelillos Pionono,Regular,PO-TAP-11,Tres mini pastelillos pionono con aioli de cilantro.,Tapeo,7.00,Y
+,Mini Pastelillos Mixto (4),Regular,PO-TAP-12,Cuatro mini pastelillos mixtos con aioli de cilantro.,Tapeo,14.00,Y
+,Salsa extra,Regular,PO-TAP-13,Mayo ketchup aioli de pimiento morrón pique de mango o chimichurri ahumado.,Tapeo,0.50,Y
+,Tostones de plátano,Regular,PO-SID-01,Tostones de plátano.,Sides,4.00,Y
+,Papas fritas,Regular,PO-SID-02,Papas fritas.,Sides,4.00,Y
+,Papas trufadas homemade,Regular,PO-SID-03,Papas trufadas homemade.,Sides,8.00,Y
+,Tostones de plátano al ajillo,Regular,PO-SID-04,Tostones de plátano al ajillo.,Sides,6.00,Y
+,Agua,Regular,PO-BEB-01,Agua.,Bebidas,1.00,Y
+,Coca Cola,Regular,PO-BEB-02,Coca Cola.,Bebidas,2.00,Y
+,Coca Cola Zero,Regular,PO-BEB-03,Coca Cola Zero.,Bebidas,2.00,Y
+,Sprite,Regular,PO-BEB-04,Sprite.,Bebidas,2.00,Y
+,Ginger Ale,Regular,PO-BEB-05,Ginger Ale.,Bebidas,3.00,Y
+,Perrier,Regular,PO-BEB-06,Perrier.,Bebidas,3.00,Y
+,Agua de coco,Regular,PO-BEB-07,Agua de coco.,Bebidas,3.00,Y

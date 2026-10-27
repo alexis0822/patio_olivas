@@ -105,7 +105,7 @@
   }
 
   /* ---------- Scroll-spy (nav links on index, subnav on menu page) ---------- */
-  const spyLinks = $$(".nav__links a[href^='#'], .subnav a[href^='#']");
+  const spyLinks = $$(".nav__links a[href^='#'], .subnav__inner a[href^='#']");
   if (spyLinks.length && "IntersectionObserver" in window) {
     const targets = spyLinks
       .map((a) => $(a.getAttribute("href")))

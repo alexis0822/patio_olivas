@@ -33,11 +33,17 @@
         <a href="#menu">Menú</a>
         <a href="#ubicacion">Ubicación</a>
         <a class="btn btn--small" href="menu.html">Ver menú completo</a>
+        <button type="button" class="btn btn--small cart-btn" data-open-cart>Pedido <span class="cart-btn__count" data-cart-count hidden>0</span></button>
       </nav>
 
-      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="overlay">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav__end">
+        <button type="button" class="cart-btn cart-btn--mobile" data-open-cart aria-label="Pedido">
+          Pedido <span class="cart-btn__count" data-cart-count hidden>0</span>
+        </button>
+        <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="overlay">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -58,9 +64,11 @@
         <a href="#ubicacion">Ubicación</a>
         <a href="menu.html">Menú completo <span aria-hidden="true">→</span></a>
       </nav>
+      <a class="btn btn--light overlay__order" data-open-cart href="menu.html#pedido">Ordenar para recoger</a>
       <div class="overlay__meta">
         <span>603 Av. Julio Andino, San Juan, PR 00924</span>
         <span>(939) 343-9664</span>
+        <span>En línea: ATH Móvil · En el patio: efectivo y tarjetas</span>
       </div>
     </div>
   </div>
@@ -81,6 +89,7 @@
         <h1 class="hero__title">Un patio para tapear,<br/>brindar y quedarse.</h1>
         <div class="hero__actions">
           <a class="btn btn--light" href="menu.html">Ver el menú</a>
+          <a class="btn btn--ghost" data-open-cart href="menu.html#pedido">Ordenar para recoger</a>
           <a class="btn btn--ghost" href="#ubicacion">Cómo llegar</a>
         </div>
       </div>
@@ -181,8 +190,11 @@
         </div>
 
         <div class="menu-preview__cta reveal">
-          <a class="btn" href="menu.html">Ver el menú completo</a>
-          <p class="note">Pregunta por la variedad de cervezas artesanales disponibles.</p>
+          <div class="cta-row">
+            <a class="btn" href="menu.html">Ver el menú completo</a>
+            <a class="btn btn--outline" data-open-cart href="menu.html#pedido">Ordenar para recoger</a>
+          </div>
+          <p class="pickup-note">Añade al pedido en el menú y paga en línea con ATH Móvil (Patiolivaspr). Efectivo y tarjetas se aceptan en el patio. Para recoger: tapeo, sides y bebidas.</p>
         </div>
       </div>
     </section>
@@ -215,10 +227,15 @@
                 <a href="mailto:Patiolivaspr@gmail.com">Correo electrónico</a>
               </dd>
             </div>
+            <div>
+              <dt>Pagos</dt>
+              <dd>En línea: ATH Móvil (Patiolivaspr)<br/>En el patio: efectivo y tarjetas</dd>
+            </div>
           </dl>
 
           <div class="location__actions">
             <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Patio+Olivas,+San+Juan">Cómo llegar</a>
+            <a class="btn btn--outline" data-open-cart href="menu.html#pedido">Ordenar para recoger</a>
           </div>
         </div>
 
@@ -253,6 +270,7 @@
 
       <div class="footer__contact">
         <p>603 Av. Julio Andino<br/>San Juan, PR 00924</p>
+        <p>En línea: ATH Móvil · En el patio: efectivo y tarjetas</p>
         <div class="socials">
           <a href="https://www.instagram.com/patiolivaspr/" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
@@ -269,6 +287,8 @@
     </div>
   </footer>
 
+  <script src="js/order-config.js"></script>
   <script src="js/main.js" defer></script>
+  <script src="js/order.js" defer></script>
 </body>
 </html>
