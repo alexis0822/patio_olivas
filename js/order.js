@@ -72,7 +72,7 @@
         <button class="cart__back" type="button" data-cart-back>← Volver al pedido</button>
         <div class="cart__confirm" data-cart-summary></div>
         <div class="cart__total"><span>Total a pagar</span><strong data-checkout-total>$0.00</strong></div>
-        <p class="cart__pay-hint">ATH Móvil envía este total a tu teléfono. El restaurante recibe el pedido cuando ese cobro queda confirmado.</p>
+        <p class="cart__pay-hint">ATH Móvil abre este total para que puedas añadir propina. El restaurante recibe el pedido cuando confirmas el pago.</p>
         <label>Nombre<input name="nombre" type="text" autocomplete="name" required></label>
         <label>Teléfono de ATH Móvil<input name="telefono" type="tel" inputmode="tel" autocomplete="tel" required></label>
         <label>Correo (opcional)<input name="correo" type="email" autocomplete="email"></label>
@@ -93,7 +93,7 @@
           <span>Negocio</span><strong>${esc(ATH_PATH)}</strong>
           <span>Total</span><strong data-pay-total>$0.00</strong>
         </p>
-        <p class="cart__pay-hint">Abre la notificación de ATH Móvil y confirma este cobro. El pedido no se envía hasta entonces.</p>
+        <p class="cart__pay-hint">En esa pantalla elige la propina y confirma el pago. El pedido no se envía hasta entonces.</p>
         <button class="btn btn--light" type="button" data-pay-check>Ya confirmé en ATH Móvil</button>
         <button class="btn btn--ghost cart__done-close" type="button" data-pay-cancel>Cancelar pago</button>
       </div>
@@ -389,12 +389,13 @@
     const ref = String(data.referenceNumber || data.reference_number || "").trim();
     const paid = Math.round(Number(data.total) * 100);
     const sameTicket = !data.ecommerceId || data.ecommerceId === pay.ecommerceId;
-    if (!sameTicket || status !== "COMPLETED" || !ref || paid !== pay.expectedCents) {
+    const tipOk = Number.isFinite(paid) && paid >= pay.expectedCents && paid <= pay.expectedCents * 2;
+    if (!sameTicket || status !== "COMPLETED" || !ref || !tipOk) {
       pay.done = true;
       clearPay();
       active = null;
       setView("checkout");
-      if (ref && paid !== pay.expectedCents) {
+      if (ref && Number.isFinite(paid) && paid !== pay.expectedCents) {
         showError(`ATH Móvil confirmó ${money(paid / 100)} y este pedido es ${pay.totalLabel}. No se envió. Referencia ${ref}. Llama al ${PHONE}.`);
       } else {
         showError("El pago de este pedido no quedó confirmado. No se envió.");
@@ -409,6 +410,8 @@
       referencia: ref,
       ecommerceId: pay.ecommerceId,
       cuenta: data.businessPath || ATH_PATH,
+      propina: money((paid - pay.expectedCents) / 100),
+      total_pagado: money(paid / 100),
       estado: "COMPLETED",
       _subject: "Pedido pagado " + ref + " — Patio Olivas",
     };
@@ -482,7 +485,7 @@
         }
         return;
       }
-      setStatus(`Abre la notificación de ATH Móvil y confirma el pago de ${pay.totalLabel}. El pedido se envía cuando ese cobro quede confirmado.`);
+      setStatus(`Abre ATH Móvil, elige la propina si quieres, y confirma el pago de ${pay.totalLabel}. El pedido se envía cuando ese cobro quede confirmado.`);
     } finally {
       if (pay) pay.ticking = false;
     }
@@ -501,7 +504,7 @@
     savePay(record);
     const totalEl = $("[data-pay-total]", root);
     if (totalEl) totalEl.textContent = record.totalLabel;
-    setStatus(`Enviamos el cobro de ${record.totalLabel} a tu ATH Móvil. Abre la notificación y confirma el pago.`);
+    setStatus(`Enviamos el cobro de ${record.totalLabel} a tu ATH Móvil. Ahí puedes añadir propina y confirmar el pago.`);
     setView("paying");
     ensureCartOpen();
     resetSubmit();
@@ -645,14 +648,6 @@
       total: money(total),
       pago: "ATH Móvil",
     };
-    const items = cart.map((i) => ({
-      name: i.name.slice(0, 80),
-      description: `${i.qty} × ${i.name}`.slice(0, 80),
-      quantity: String(i.qty),
-      price: (cents(i.price) / 100).toFixed(2),
-      tax: "0.00",
-      metadata: "",
-    }));
     submit.disabled = true;
     submit.textContent = "Enviando cobro a ATH Móvil…";
     let created;
@@ -663,12 +658,9 @@
           publicToken: publicToken(),
           timeout: 600,
           total,
-          subtotal: total,
-          tax: 0,
           metadata1: "Patio Olivas",
           metadata2: ("PO" + Date.now().toString(36)).slice(0, 40),
           phoneNumber: phone,
-          items,
         },
       });
     } catch (error) {
@@ -711,6 +703,10 @@
       ticking: false,
       authorizing: false,
     });
+    const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+    if (mobile) {
+      window.location.href = "https://pagos.athmovilapp.com/pagoPorCodigo.html?id=" + encodeURIComponent(ecommerceId);
+    }
   });
 
   const resumeUnsent = () => {

@@ -7,6 +7,6 @@
 window.PATIO_OLIVAS_ORDER = {
   email: "Patiolivaspr@gmail.com",
   submitUrl: "https://formsubmit.co/ajax/Patiolivaspr@gmail.com",
-  athPath: "Patiolivaspr",
+  athPath: "patiolivas",
   athPublicToken: "0afa71188c0cbce9a70ce60138eec41347475b1f",
 };
