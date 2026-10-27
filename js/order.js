@@ -64,6 +64,7 @@
           <div class="cart__breakdown">
             <div><span>Subtotal</span><span data-cart-subtotal>$0.00</span></div>
             <div><span>IVU 7%</span><span data-cart-ivu>$0.00</span></div>
+            <div data-cart-tip-row hidden><span>Propina</span><span data-cart-tip>$0.00</span></div>
           </div>
           <div class="cart__total"><span>Total</span><strong data-cart-total>$0.00</strong></div>
           <p class="cart__pay-hint">El pago es con ATH Móvil antes de enviar el pedido. Efectivo y tarjetas, en el patio.</p>
@@ -75,12 +76,26 @@
         <h2 class="cart__title">Confirma tu pedido</h2>
         <button class="cart__back" type="button" data-cart-back>← Volver al pedido</button>
         <div class="cart__confirm" data-cart-summary></div>
+        <fieldset class="cart-tip">
+          <legend>Propina</legend>
+          <div class="cart-tip__options">
+            <button type="button" class="cart-tip__opt is-selected" data-tip="0">Sin propina</button>
+            <button type="button" class="cart-tip__opt" data-tip="0.18">18%<span data-tip-amt="0.18"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="0.20">20%<span data-tip-amt="0.20"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="0.30">30%<span data-tip-amt="0.30"></span></button>
+            <button type="button" class="cart-tip__opt" data-tip="other">Otra</button>
+          </div>
+          <label class="cart-tip__other" data-tip-other hidden>Otra cantidad
+            <input name="propina_otra" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00">
+          </label>
+        </fieldset>
         <div class="cart__breakdown">
           <div><span>Subtotal</span><span data-checkout-subtotal>$0.00</span></div>
           <div><span>IVU 7%</span><span data-checkout-ivu>$0.00</span></div>
+          <div><span>Propina</span><span data-checkout-tip>$0.00</span></div>
         </div>
         <div class="cart__total"><span>Total a pagar</span><strong data-checkout-total>$0.00</strong></div>
-        <p class="cart__pay-hint">El restaurante recibe el pedido cuando confirmas el pago en ATH Móvil.</p>
+        <p class="cart__pay-hint">La propina se calcula sobre el subtotal y se suma al IVU. El restaurante recibe el pedido cuando confirmas el pago en ATH Móvil.</p>
         <label>Nombre<input name="nombre" type="text" autocomplete="name" required></label>
         <label>Teléfono de ATH Móvil<input name="telefono" type="tel" inputmode="tel" autocomplete="tel" required></label>
         <label>Correo (opcional)<input name="correo" type="email" autocomplete="email"></label>
@@ -152,11 +167,21 @@
   /* Pickup is prepared food and non-alcoholic drinks. A certified
      restaurant in San Juan charges 7% IVU on those (6% state + 1% municipal). */
   const IVU_PERCENT = 7;
+  let tipMode = "0";
   const foodCents = () => cart.reduce((sum, i) => sum + cents(i.price) * i.qty, 0);
+  const tipCentsOf = (food) => {
+    if (tipMode === "other") {
+      const raw = Number(form.elements.propina_otra?.value);
+      if (!Number.isFinite(raw) || raw <= 0) return 0;
+      return Math.round(raw * 100);
+    }
+    return Math.round(food * Number(tipMode));
+  };
   const chargeOf = () => {
     const food = foodCents();
     const ivu = Math.round(food * IVU_PERCENT / 100);
-    return { food, ivu, total: food + ivu };
+    const tip = tipCentsOf(food);
+    return { food, ivu, tip, total: food + ivu + tip };
   };
   const amount = (centsValue) => (centsValue / 100).toFixed(2);
 
@@ -191,8 +216,12 @@
     footer.hidden = cart.length === 0;
     const subEl = $("[data-cart-subtotal]", root);
     const ivuEl = $("[data-cart-ivu]", root);
+    const tipRow = $("[data-cart-tip-row]", root);
+    const tipEl = $("[data-cart-tip]", root);
     if (subEl) subEl.textContent = money(charge.food / 100);
     if (ivuEl) ivuEl.textContent = money(charge.ivu / 100);
+    if (tipRow) tipRow.hidden = charge.tip <= 0;
+    if (tipEl) tipEl.textContent = money(charge.tip / 100);
     if (totalEl) totalEl.textContent = money(charge.total / 100);
     renderCounts();
   };
@@ -210,8 +239,14 @@
     `).join("");
     const subEl = $("[data-checkout-subtotal]", root);
     const ivuEl = $("[data-checkout-ivu]", root);
+    const tipEl = $("[data-checkout-tip]", root);
+    $$("[data-tip-amt]", root).forEach((el) => {
+      const rate = Number(el.dataset.tipAmt);
+      el.textContent = charge.food ? " " + money(Math.round(charge.food * rate) / 100) : "";
+    });
     if (subEl) subEl.textContent = money(charge.food / 100);
     if (ivuEl) ivuEl.textContent = money(charge.ivu / 100);
+    if (tipEl) tipEl.textContent = money(charge.tip / 100);
     if (totalEl) totalEl.textContent = money(charge.total / 100);
     if (payBtn && !payBtn.disabled) payBtn.textContent = "Pagar ahora " + money(charge.total / 100);
   };
@@ -556,7 +591,23 @@
     setView("checkout");
     form.elements.nombre?.focus();
   });
-  $("[data-cart-back]", root).addEventListener("click", () => setView("list"));
+  $("[data-cart-back]", root).addEventListener("click", () => {
+    renderLines();
+    setView("list");
+  });
+  root.addEventListener("click", (e) => {
+    const tipBtn = e.target.closest("[data-tip]");
+    if (!tipBtn || !form.contains(tipBtn)) return;
+    tipMode = tipBtn.dataset.tip;
+    $$("[data-tip]", form).forEach((btn) => btn.classList.toggle("is-selected", btn === tipBtn));
+    const other = $("[data-tip-other]", form);
+    if (other) other.hidden = tipMode !== "other";
+    if (tipMode === "other") form.elements.propina_otra?.focus();
+    renderSummary();
+  });
+  form.elements.propina_otra?.addEventListener("input", () => {
+    if (tipMode === "other") renderSummary();
+  });
 
   $("[data-pay-check]", root).addEventListener("click", () => { tick(); });
   $("[data-pay-cancel]", root).addEventListener("click", async () => {
@@ -647,6 +698,10 @@
       showError("Elige el día y la hora para recoger.");
       return;
     }
+    if (charge.tip > charge.food) {
+      showError("La propina no puede ser mayor que el pedido.");
+      return;
+    }
     if (totalCents < 100 || totalCents > 150000) {
       showError("ATH Móvil cobra entre $1.00 y $1,500.00.");
       return;
@@ -669,6 +724,7 @@
       pedido: orderText,
       subtotal: money(charge.food / 100),
       ivu: money(charge.ivu / 100),
+      propina: money(charge.tip / 100),
       total: money(charge.total / 100),
       pago: "ATH Móvil",
     };
@@ -680,6 +736,16 @@
       tax: "0.00",
       metadata: "",
     }));
+    if (charge.tip > 0) {
+      items.push({
+        name: "Propina",
+        description: "Propina",
+        quantity: "1",
+        price: amount(charge.tip),
+        tax: "0.00",
+        metadata: "",
+      });
+    }
     submit.disabled = true;
     submit.textContent = "Enviando cobro a ATH Móvil…";
     let created;
@@ -690,7 +756,7 @@
           publicToken: publicToken(),
           timeout: 600,
           total: amount(charge.total),
-          subtotal: amount(charge.food),
+          subtotal: amount(charge.food + charge.tip),
           tax: amount(charge.ivu),
           metadata1: "Patio Olivas",
           metadata2: ("PO" + Date.now().toString(36)).slice(0, 40),
@@ -731,7 +797,7 @@
       ecommerceId,
       authToken,
       expectedCents: totalCents,
-      totalLabel: money(total),
+      totalLabel: money(charge.total / 100),
       payload,
       deadline: Date.now() + 600000,
       done: false,
